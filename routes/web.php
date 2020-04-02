@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::group(['middleware' => 'auth'], function (){
+
+    Route::get('/kamar', 'InpatiensController@select_inap')->name('select_room');
     Route::group(['middleware' => ['Admin']], function(){
         Route::get('/dokter', 'DoctorController@index')->name('dokterindex');
         Route::get('/tambah', 'DoctorController@create')->name('doktercreate');
@@ -46,12 +48,14 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::group(['middleware' => ['dokterOrPerawat']], function(){
         Route::resource('/riwayatpasien', 'HistoryController');
+        Route::resource('/rawatinap', 'InpatiensController');
+
     });
 
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/dashboard', 'DashboardController@index');
 });
 
-Route::resource('/rawatinap', 'InpatiensController');
 
 
 

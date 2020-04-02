@@ -17,9 +17,9 @@ class HistoryController extends Controller
        $history = PatientHistory::with('patient')->orderBy('created_at', 'DESC')->paginate(10);
         $history = PatientHistory::with('doctor')->orderBy('created_at', 'DESC')->paginate(10);
        $history = PatientHistory::with('treatmentstatus')->orderBy('created_at', 'DESC')->paginate(10);
-       $nurse = Nurse::orderBy('name', 'ASC')->get();
+       $history = PatientHistory::with('inpatient')->orderBy('created_at', 'DESC')->paginate(10);
 
-        return view('admin.history.index', compact('history', 'nurse'));
+        return view('admin.history.index', compact('history'));
 
     }
 
@@ -27,7 +27,8 @@ class HistoryController extends Controller
         $doctor = Doctor::orderBy('name', 'ASC')->get();
         $patient = Patient::orderBy('name', 'ASC')->get();
         $status = TreatmentStatus::orderBy('status', 'ASC')->get();
-        return view('admin.history.create', compact('doctor','patient','status'));
+        $rawat = Inpatient::orderBy('id', 'ASC')->get();
+        return view('admin.history.create', compact('doctor','patient','status', 'rawat'));
     }
 
     public function store(Request $request){
@@ -35,7 +36,8 @@ class HistoryController extends Controller
             'id_patient' => 'required|exists:patients,id',
             'id_doctor' => 'required|exists:doctors,id',
             'disease' => 'required|string|max:100',
-            'id_treatment_statues' => 'required|exists:treatment_statuses,id'
+            'id_treatment_statues' => 'required|exists:treatment_statuses,id',
+
 
         ]);
 
@@ -44,10 +46,11 @@ class HistoryController extends Controller
                 'id_patient' => $request->id_patient,
                 'id_doctor' => $request->id_doctor,
                 'disease' => $request->disease,
-                'id_treatment_statues' => $request->id_treatment_statues
+                'id_treatment_statues' => $request->id_treatment_statues,
+                'id_inpatients' =>$request->id_inpatients
             ]);
             return redirect(route('riwayatpasien.index'))
-                ->with(['success' => '<strong>' . $history->name . '</strong> Ditambahkan']);
+                ->with(['success' => '<strong>' . $history->patient->name . '</strong> Ditambahkan']);
         } catch (\Exception $e) {
             return redirect()->back()
                 ->with(['error' => $e->getMessage()]);
@@ -64,7 +67,10 @@ class HistoryController extends Controller
     public function edit($id){
         $history = PatientHistory::findOrFail($id);
         $patient = Patient::orderBy('name', 'ASC')->get();
-        return view('admin.history.edit', compact('history', 'patient'));
+        $doctor = Doctor::orderBy('name', 'ASC')->get();
+        $status = TreatmentStatus::orderBy('status', 'ASC')->get();
+        $rawat = Inpatient::orderBy('id', 'ASC')->get();
+        return view('admin.history.edit', compact('history', 'patient','doctor', 'status', 'rawat'));
     }
 
     public function show($id){
@@ -73,4 +79,30 @@ class HistoryController extends Controller
         return view('admin.history.rawatinap', compact('history', 'patient'));
     }
 
+    public function update(Request $request, $id){
+        try {
+            $this->validate($request, [
+                'id_patient' => 'required|exists:patients,id',
+                'id_doctor' => 'required|exists:doctors,id',
+                'disease' => 'required|string|max:100',
+                'id_treatment_statues' => 'required|exists:treatment_statuses,id',
+
+
+            ]);
+                $history = PatientHistory::findOrFail($id);
+                $history->update([
+                    'id_patient' => $request->id_patient,
+                    'id_doctor' => $request->id_doctor,
+                    'disease' => $request->disease,
+                    'id_treatment_statues' => $request->id_treatment_statues,
+                    'id_inpatients' =>$request->id_inpatients
+                ]);
+
+                return redirect(route('riwayatpasien.index'))
+                ->with(['success' => '<strong>' . $history->patient->name . '</strong> Diubah']);
+            } catch (\Exception $e) {
+                return redirect()->back()
+                    ->with(['error' => $e->getMessage()]);
+            }
+    }
 }

@@ -1,5 +1,6 @@
 @extends('layouts.master')
 @section('content')
+@section('title', 'Riwayat Pasien')
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -28,6 +29,7 @@
                         <th>Nama Dokter</th>
                         <th>Diagnosa Penyakit</th>
                         <th>Status Pengobatan</th>
+                        <th>No Rawat Inap</th>
                         <th style="text-align:center;">
                         </th>
                     </tr>
@@ -43,22 +45,17 @@
                         <td>{{$row->disease}}</td>
 
                         <td>{{$row->treatmentstatus->status}} </td>
+                        <td>{{$row->id_inpatients}}</td>
                         <td>
                         <form action="{{route('riwayatpasien.destroy', $row->id)}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="_method" value="DELETE">
-                        <a href="{{route('riwayatpasien.edit', $row->id)}}" class="btn btn-warning btn-sm">
+                                <a href="{{route('riwayatpasien.edit', $row->id)}}" class="btn btn-warning btn-sm">
                                     <i class="fa fa-edit"></i>
                                 </a>
                                 <button class="btn btn-danger btn-sm">
                                     <i class="fa fa-trash"></i>
                                 </button>
-
-                                <td>@if($row->id_treatment_statues == '1')
-                                <a href="{{route('riwayatpasien.show', $row->id)}}" type="submit" class="btn btn-success btn-sm">
-                                        <i class="fa fa-plus"></i></a>
-                                    @endif
-                                </td>
                             </form>
                         </td>
                     </tr>
@@ -73,41 +70,5 @@
         </div>
     </div>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-        <form action = "{{route('rawatinap.store')}}">
-                <div class="form-group">
-                    <label for="room number">Nomor Kamar </label>
-                    <input type="text" class="form-control" id="room number" placeholder="Patient room number" name="room number">
-                </div>
-                <div class="form-group">
-                    <label for="">Nama Perawat</label>
-                    <select name="id_doctor" id="id_doctor"
-                    required
-                        class="form-control {{ $errors->has('id_doctor') ? 'is-invalid':'' }}">
-                        <option value="">Pilih</option>
-                        @foreach ($nurse as $row)
-                        <option value="{{ $row->id }}">{{ ucfirst($row->name) }}</option>
-                        @endforeach
-                    </select>
-                    <p class="text-danger">{{ $errors->first('id_doctor') }}</p>
-                </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
 @endsection

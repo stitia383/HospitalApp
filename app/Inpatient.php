@@ -11,8 +11,8 @@ class Inpatient extends Model
          return $this->belongsTo(Nurse::class, 'id_nurse');
      }
 
-     public function patient(){
-         return $this->belongsTo(Patient::class, '');
+     public function treatmentstatus(){
+         return $this->belongsTo(TreatmentStatus::class, 'id_treatment_statues');
      }
-    protected $fillable = ['id_nurse', 'room_number'];
+    protected $fillable = ['id_nurse', 'room_number', 'id_treatment_statues'];
 }

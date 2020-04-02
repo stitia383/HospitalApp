@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('content')
-@section('title', 'Edit Data Perawat')
+@section('title', 'Edit Rawat Inap')
 <div class="container">
     <!-- Begin Page Content -->
     <div class="content-wrapper">
@@ -32,41 +32,46 @@
                                 <div class="alert alert-danger alert-dismissible">
                                     {!! session('error') !!}</div>
                                 @endif
-                                <form action="{{route('perawat.update', $nurse->id)}}" method="POST" enctype="multipart/form-data">
+                                <form action="{{route('rawatinap.update', $inpatient->id)}}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group">
-                                        <label for="">Nama Perawat</label>
-                                        <input type="text" name="name" required
-                                    class="form-control {{ $errors->has('name') ? 'is-invalid':'' }}" value="{{$nurse->name}}">
-                                        <p class="text-danger">{{ $errors->first('name') }}</p>
+                                        <label for="">No Kamar</label>
+                                        <input type="text" name="room_number" required
+                                            class="form-control {{ $errors->has('room_number') ? 'is-invalid':'' }}" value="{{$inpatient->room_number}}">
+                                        <p class="text-danger">{{ $errors->first('room_number') }}</p>
                                     </div>
                                     <div class="form-group">
-                                        <label for="">Dokter yang bertanggung jawab</label>
-                                        <select name="id_doctor" id="id_doctor"
+                                        <label for="">Nama Perawat</label>
+                                        <select name="id_nurse" id="id_nurse"
                                         required
-                                            class="form-control {{ $errors->has('id_doctor') ? 'is-invalid':'' }}">
-                                    <option value="{{$nurse->id_doctor}}">Pilih</option>
-                                            @foreach ($doctor as $row)
-                                            <option value="{{ $row->id }}" {{ $row->id == $nurse->id_doctor ? 'selected':'' }}>
+                                            class="form-control {{ $errors->has('id_nurse') ? 'is-invalid':'' }}">
+                                    <option value="{{$inpatient->id_nurse}}">Pilih</option>
+                                            @foreach ($nurse as $row)
+                                            <option value="{{ $row->id }}" {{ $row->id == $inpatient->id_nurse ? 'selected':'' }}>
                                                 {{ ucfirst($row->name) }}
                                             </option>
                                             @endforeach
                                         </select>
-                                        <p class="text-danger">{{ $errors->first('id_doctor') }}</p>
+                                        <p class="text-danger">{{ $errors->first('id_nurse') }}</p>
                                     </div>
                                     <div class="form-group">
-                                        <label for="">Jenis Kelamin</label>
-                                        <select name="gender" id="gender" class="form-control"
-                                    required class="form-control {{ $errors->has('gender') ? 'is-invalid':'' }}" value="{{$nurse->gender}}">
-                                        <p class="text-danger">{{ $errors->first('gender') }}</p>>
-                                            <option value="laki-laki">Laki-Laki</option>
-                                            <option value="perempuan">Perempuan</option>
+                                        <label for="">Status Pengobatan</label>
+                                        <select name="id_treatment_statues" id="id_treatment_statues"
+                                        required
+                                            class="form-control {{ $errors->has('id_treatment_statues') ? 'is-invalid':'' }}">
+                                    <option value="{{$inpatient->id_treatment_statues}}">Pilih</option>
+                                            @foreach ($status as $row)
+                                            <option value="{{ $row->id }}" {{ $row->id == $inpatient->id_treatment_statues ? 'selected':'' }}>
+                                                {{ ucfirst($row->status) }}
+                                            </option>
+                                            @endforeach
                                         </select>
+                                        <p class="text-danger">{{ $errors->first('id_treatment_statues') }}</p>
                                     </div>
                                     <div class="form-group">
                                         <button class="btn btn-primary btn-sm">
-                                            <i class="fa fa-send"></i> Edit
+                                            <i class="fa fa-send"></i> Simpan
                                         </button>
                                     </div>
                                 </form>
@@ -78,3 +83,4 @@
 
 
 @endsection
+

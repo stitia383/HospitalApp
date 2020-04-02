@@ -10,10 +10,10 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Rumah Sakit- Dashboard</title>
+  <title>Rumah sakit - @yield('title')</title>
 
   <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template-->
@@ -42,7 +42,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="index.html">
+      <a class="nav-link" href="/dashboard">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -113,7 +113,15 @@
           <span>Riwayat Pasien</span>
         </a>
       </li>
-       @endif
+
+
+      <!-- Nav Item - Tables -->
+      <li class="nav-item">
+        <a class="nav-link" href="{{route('rawatinap.index')}}">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Rawat Inap</span></a>
+      </li>
+      @endif
 
       <!-- Nav Item - Charts -->
       <li class="nav-item has-treeview">
@@ -125,18 +133,11 @@
                 {{ __('Logout') }}
             </p>
         </a>
-       
+
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             @csrf
         </form>
     </li>
-
-      <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Tables</span></a>
-      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -267,6 +268,7 @@
 
   <!-- Bootstrap core JavaScript-->
   <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
+
   <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
   <!-- Core plugin JavaScript-->
@@ -274,14 +276,10 @@
 
   <!-- Custom scripts for all pages-->
   <script src="{{asset('js/sb-admin-2.min.js')}}"></script>
+  @yield('select')
 
-  <!-- Page level plugins -->
-  <script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script>
 
-  <!-- Page level custom scripts -->
-  <script src="{{asset('js/demo/chart-area-demo.js')}}"></script>
-  <script src="{{asset('js/demo/chart-pie-demo.js')}}"></script>
-
+  <!-- Page level plu
 </body>
 
 </html>

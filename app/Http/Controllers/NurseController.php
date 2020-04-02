@@ -54,7 +54,7 @@ class NurseController extends Controller
                     'name' => 'required|string|max:100',
                     'id_doctor' => 'required|exists:doctors,id'
                 ]);
-                    $nurse = Doctor::findOrFail($id);
+                    $nurse = Nurse::findOrFail($id);
                     $nurse->update([
                         'name' => $request->name,
                         'id_doctor' => $request->id_doctor,

@@ -1,5 +1,6 @@
 @extends('layouts.master')
 @section('content')
+@section('title', 'Tambah Data Pasien')
 <div class="container">
     <!-- Begin Page Content -->
     <div class="content-wrapper">

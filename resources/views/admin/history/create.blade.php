@@ -1,5 +1,6 @@
 @extends('layouts.master')
 @section('content')
+@section('title', 'Tambah Riwayat Pasien')
 <div class="container">
 <!-- Begin Page Content -->
 <div class="content-wrapper">
@@ -70,10 +71,22 @@
                                         class="form-control {{ $errors->has('id_treatment_statues') ? 'is-invalid':'' }}">
                                         <option value="">Pilih</option>
                                         @foreach ($status as $row)
-                                        <option value="{{ $row->id }}">{{ ucfirst($row->status) }}</option>
+                                <option value="{{ $row->id }}">{{ ucfirst($row->status) }}</option>
                                         @endforeach
                                     </select>
                                     <p class="text-danger">{{ $errors->first('id_treatment_statues') }}</p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Rawat Inap</label>
+                                    <select name="id_inpatients" id="id_inpatients"
+
+                                        class="form-control {{ $errors->has('id_inpatients') ? 'is-invalid':'' }}">
+                                        <option value="">Pilih</option>
+                                        @foreach ($rawat as $row)
+                                <option value="{{ $row->id }}">{{ ucfirst($row->id) }}</option>
+                                        @endforeach
+                                    </select>
+                                    <p class="text-danger">{{ $errors->first('id_inpatients') }}</p>
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-primary btn-sm">
@@ -88,4 +101,43 @@
 </div>
 
 
+
+
 @endsection
+@section('select')
+<script>
+    $(document).ready(function(){
+       $('#id_treatment_statues').change(function(){
+
+           var close = $(this).closest('form');
+           var treatment_statues = $(this).val();
+           var _token = $(this).closest('form').find('[name="_token"]').val();
+
+          if(treatment_statues == '1'){
+           $('#id_inpatients').closest('.form-group').show();
+           $.ajax({
+               method: 'GET',
+               url: "{{route('select_room')}}?treatment_statues=" + treatment_statues,
+               success: function(result){
+                   console.log(result);
+                   if(result){
+                       $('#id_inpatients').empty();
+                       $('#id_inpatients').append('<option>==pilih==</option>');
+                       $.each(result, function(key,value){
+                           $('#id_inpatients').append('<option value="'+value+'">'+value+'</option>');
+                       });
+                   }
+               }
+           })
+          }else if(treatment_statues == '2'){
+              $('#id_inpatients').closest('.form-group').hide();
+          }
+       })
+    });
+
+
+   </script>
+@endsection
+
+
+

@@ -1,9 +1,9 @@
 @extends('layouts.master')
 @section('content')
-@section('title', 'Data Perawat')
+@section('title', 'Rawat Inap')
 <div class="container-fluid">
     . <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Data Perawat</h1>
+        <h1 class="h3 mb-0 text-gray-800">Data Rawat Inap</h1>
     </div>
 
     <section class="content">
@@ -19,31 +19,26 @@
                 </div>
                 @endif
                 <thead>
-                    <tr>
-                        <th>Nama</th>
-                        <th>Dokter yang bertanggung jawab</th>
-                        <th>Jenis Kelamin</th>
+                    <tr><th>No Rawat Inap</th>
+                        <th>No Kamar</th>
+                        <th>Nama Perawat</th>
                         <th style="text-align:center;">
 
-                        <a href="{{route('perawat.create')}}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Tambah data</a>
+                        <a href="{{route('rawatinap.create')}}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Tambah data</a>
 
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($nurse as $row)
-                    <tr>
+                    @forelse ($patient as $row)
+                    <tr><td>{{$row->id}}</td>
+                        <td>{{ $row->room_number }}</td>
+                        <td>{{$row->nurse->name}}</td>
                         <td>
-                            <sup class="label label-success">({{ $row->id }})</sup>
-                            <strong>{{ ucfirst($row->name) }}</strong>
-                        </td>
-                        <td>{{ $row->doctor->name }}</td>
-                        <td>{{$row->gender}}</td>
-                        <td>
-                        <form action="{{route('perawat.destroy', $row->id)}}" method="POST">
+                        <form action="{{route('rawatinap.destroy', $row->id)}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="_method" value="DELETE">
-                                <a href="{{route('perawat.edit', $row->id)}}" class="btn btn-warning btn-sm">
+                        <a href="{{route('rawatinap.edit', $row->id)}}" class="btn btn-warning btn-sm">
                                     <i class="fa fa-edit"></i>
                                 </a>
                                 <button class="btn btn-danger btn-sm">
@@ -63,7 +58,7 @@
             </div>
         </div>
         <div class="float-right">
-            {!! $nurse->links() !!}
+            {!! $patient->links() !!}
         </div>
                             </div>
                         </table>
@@ -72,7 +67,6 @@
             </div>
         </div>
     </section>
-</div>
 
 
 @endsection

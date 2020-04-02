@@ -19,5 +19,9 @@ class PatientHistory extends Model
         return $this->belongsTo(TreatmentStatus::class, 'id_treatment_statues');
     }
 
-    protected $fillable = ['id', 'name', 'id_patient', 'id_doctor', 'id_treatment_statues','disease'];
+    public function inpatient(){
+        return $this->belongsTo(Inpatient::class, 'id_inpatients');
+    }
+
+    protected $fillable = ['id',  'id_patient', 'id_doctor', 'id_treatment_statues','disease', 'id_inpatients'];
 }
